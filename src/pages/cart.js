@@ -32,7 +32,7 @@ export default function Cart() {
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-4">
           {cart.map((item) => (
-            <div key={item.id} className="bg-white rounded-lg shadow-md p-6">
+            <div key={item.id} className="bg-BLACK rounded-lg shadow-md p-6">
               <div className="flex gap-6">
                 {/* Product Image */}
                 <div className="relative w-24 h-24 flex-shrink-0 bg-gray-100 rounded">
@@ -47,7 +47,7 @@ export default function Cart() {
                 {/* Product Info */}
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                  <p className="text-2xl font-bold text-blue-600 mb-4">
+                  <p className="text-2xl font-bold text-blue-600 mb-4 ">
                     ${item.price}
                   </p>
 
@@ -99,7 +99,7 @@ export default function Cart() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
+          <div className="bg-BLACK rounded-lg shadow-md p-6 sticky top-4">
             <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
 
             <div className="space-y-3 mb-6">

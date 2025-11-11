@@ -36,9 +36,14 @@ export default function ContactPage() {
         backgroundColor: '#f2f5f9',
         minHeight: '100vh',
         paddingTop: '50px',
-        paddingBottom: '60px'
+        paddingBottom: '60px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
     >
+
       {/* Hero Section */}
       <Container className="text-center mb-5">
         <Image
@@ -69,7 +74,12 @@ export default function ContactPage() {
                 border: 'none',
                 borderRadius: '14px',
                 boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-                backgroundColor: '#ffffff'
+                backgroundColor: '#11acffff',
+                color: 'black',
+                fontWeight: 'bold',
+                display: 'flex',
+                 alignItems: 'center',
+                  justifyContent: 'center'
               }}
             >
               <Card.Body style={{ padding: '35px' }}>
@@ -112,7 +122,7 @@ export default function ContactPage() {
                           onChange={handleChange}
                           placeholder="john@example.com"
                           required
-                          style={{ borderRadius: '8px', borderColor: '#c7d2fe' }}
+                          style={{ borderRadius: '8px', borderColor: '#00ffeaff' }}
                         />
                       </Form.Group>
                     </Col>
@@ -127,7 +137,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       placeholder="How can we help?"
                       required
-                      style={{ borderRadius: '8px', borderColor: '#c7d2fe' }}
+                      style={{ borderRadius: '8px', borderColor: '#2ccd0cff' }}
                     />
                   </Form.Group>
 
@@ -190,8 +200,8 @@ export default function ContactPage() {
                 }}
               >
                 <Card.Body>
-                  <h5 style={{ color: '#1e3a8a', fontWeight: '700' }}>{info.title}</h5>
-                  <p style={{ whiteSpace: 'pre-line', color: '#374151', marginBottom: '0' }}>
+                  <h5 style={{ color: '#1e3a8a', fontWeight: '700', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{info.title}</h5>
+                  <p style={{ whiteSpace: 'pre-line', color: '#0056e1ff', marginBottom: '0' ,display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     {info.content}
                   </p>
                 </Card.Body>
@@ -234,5 +244,6 @@ export default function ContactPage() {
         </Row>
       </Container>
     </div>
+    
   );
 }

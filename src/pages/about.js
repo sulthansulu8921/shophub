@@ -9,13 +9,13 @@ export default function About() {
         <div className="prose prose-lg max-w-none">
           {/* Our Story Section */}
           <section className="mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-blue-600">Our Story</h2>
-            <p className="text-gray-700 leading-relaxed mb-4">
+            <h2 className="text-3xl font-bold mb-4 text-blue-400">Our Story</h2>
+            <p className="text-gray-700 leading-relaxed mb-4 bg-white margin-left-10px">
               Founded in 2025, ShopHub has become one of the leading online shopping
               destinations, offering a wide variety of products at competitive prices.
               We believe that shopping should be easy, enjoyable, and accessible to everyone.
             </p>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 leading-relaxed bg-white border-radius-lg p-4">
               Our mission is to provide customers with the best shopping experience by
               offering quality products, exceptional customer service, and fast delivery.
               We work directly with manufacturers and suppliers to ensure you get the

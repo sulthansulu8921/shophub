@@ -15,7 +15,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-copy">
-        <p>© {new Date().getFullYear()} Your Company. All rights reserved.</p>
+        <p>© {new Date().getFullYear()}   OnlineStore. All rights reserved.</p>
       </div>
     </footer>
   );

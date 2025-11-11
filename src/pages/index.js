@@ -6,7 +6,7 @@ export default function Home({ featuredProducts }) {
   return (
     <Layout title="ShopHub - Home">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-12 mb-12">
+      <section className="bg-gradient-to-r from-red-500 to-black-600 text-white rounded-lg p-12 mb-12">
         <div className="max-w-3xl">
           <h1 className="text-5xl font-bold mb-4">Welcome to ShopHub</h1>
           <p className="text-xl mb-6">

@@ -28,7 +28,7 @@ export default function ProductCard({ product }) {
           </h3>
           <div className="flex items-center justify-between mb-3">
             <span className="text-2xl font-bold text-blue-600">
-              ${product.price}
+              ${product.price * 10}
             </span>
             <span className="text-yellow-500">★ {product.rating.rate}</span>
           </div>
