@@ -60,9 +60,11 @@ export default function ProductDetail({ product }) {
 
             <div className="flex items-center mb-6">
               <span className="text-yellow-500 text-xl mr-2">
-                ★ {product.rating.rate}
+                ★ {product.rating?.rate ?? 'N/A'}
               </span>
-              <span className="text-gray-600">({product.rating.count} reviews)</span>
+              <span className="text-gray-600">
+                ({product.rating?.count ?? 0} reviews)
+              </span>
             </div>
 
             <p className="text-5xl font-bold text-blue-600 mb-6">
@@ -111,35 +113,49 @@ export default function ProductDetail({ product }) {
   );
 }
 
-// Dynamic Static Generation with fallback
+// ✅ Static Paths (build-time pre-rendering)
 export async function getStaticPaths() {
-  const res = await fetch('https://fakestoreapi.com/products');
-  const products = await res.json();
+  try {
+    const res = await fetch('https://fakestoreapi.com/products');
+    const products = await res.json();
 
-  const paths = products.map((product) => ({
-    params: { id: product.id.toString() },
-  }));
+    const paths = products.map((product) => ({
+      params: { id: product.id.toString() },
+    }));
 
-  return {
-    paths,
-    fallback: true, // Enable fallback for new products
-  };
+    return { paths, fallback: true };
+  } catch (error) {
+    console.error('Error fetching product paths:', error);
+    return { paths: [], fallback: true };
+  }
 }
 
+// ✅ Safe Static Props with HTML/JSON detection
 export async function getStaticProps({ params }) {
   try {
     const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
-    const product = await res.json();
+
+    if (!res.ok) {
+      console.error(`Failed to fetch product ${params.id}: ${res.status}`);
+      return { notFound: true };
+    }
+
+    const text = await res.text();
+    let product;
+
+    try {
+      product = JSON.parse(text);
+    } catch {
+      console.error(`Invalid JSON for product ${params.id}`);
+      return { notFound: true };
+    }
 
     return {
-      props: {
-        product,
-      },
-      revalidate: 3600, // Revalidate every hour
+      props: { product },
+      revalidate: 3600, // 1 hour revalidation
     };
   } catch (error) {
-    return {
-      notFound: true,
-    };
+    console.error(`Fetch error for product ${params.id}:`, error);
+    return { notFound: true };
   }
 }
