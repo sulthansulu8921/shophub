@@ -7,30 +7,36 @@ export default function ProductDetail({ product }) {
   const router = useRouter();
   const { addToCart } = useCart();
 
+  // Show loading state while fallback page is being built
   if (router.isFallback) {
     return (
       <Layout>
-        <div className="text-center py-12">Loading...</div>
+        <div className="text-center py-12 text-xl font-semibold">
+          Loading product details...
+        </div>
       </Layout>
     );
   }
 
+  // Handle missing product
   if (!product) {
     return (
       <Layout>
-        <div className="text-center py-12">Product not found</div>
+        <div className="text-center py-12 text-xl font-semibold text-red-600">
+          Product not found.
+        </div>
       </Layout>
     );
   }
 
   const handleAddToCart = () => {
     addToCart(product);
-    alert('Added to cart successfully!');
+    alert('✅ Added to cart successfully!');
   };
 
   return (
     <Layout title={`${product.title} - ShopHub`}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto px-4">
         <button
           onClick={() => router.back()}
           className="mb-6 text-blue-600 hover:text-blue-800 font-semibold"
@@ -40,13 +46,14 @@ export default function ProductDetail({ product }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Product Image */}
-          <div className="bg-white rounded-lg p-8">
+          <div className="bg-white rounded-lg p-8 shadow">
             <div className="relative h-96">
               <Image
                 src={product.image}
                 alt={product.title}
                 fill
                 className="object-contain"
+                priority
               />
             </div>
           </div>
@@ -73,7 +80,9 @@ export default function ProductDetail({ product }) {
 
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-3">Description</h2>
-              <p className="text-gray-700 leading-relaxed">{product.description}</p>
+              <p className="text-gray-700 leading-relaxed">
+                {product.description}
+              </p>
             </div>
 
             <div className="space-y-4">
@@ -113,49 +122,46 @@ export default function ProductDetail({ product }) {
   );
 }
 
-// ✅ Static Paths (build-time pre-rendering)
+// ✅ Generate paths at build time
 export async function getStaticPaths() {
   try {
     const res = await fetch('https://fakestoreapi.com/products');
+    if (!res.ok) throw new Error(`Failed to fetch products: ${res.status}`);
+
     const products = await res.json();
 
     const paths = products.map((product) => ({
       params: { id: product.id.toString() },
     }));
 
-    return { paths, fallback: true };
+    return { paths, fallback: 'blocking' }; // 👈 safer and recommended
   } catch (error) {
-    console.error('Error fetching product paths:', error);
-    return { paths: [], fallback: true };
+    console.error('Error in getStaticPaths:', error);
+    return { paths: [], fallback: 'blocking' };
   }
 }
 
-// ✅ Safe Static Props with HTML/JSON detection
+// ✅ Fetch individual product data
 export async function getStaticProps({ params }) {
   try {
     const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
-
     if (!res.ok) {
-      console.error(`Failed to fetch product ${params.id}: ${res.status}`);
+      console.error(`Failed to fetch product ${params.id}`);
       return { notFound: true };
     }
 
-    const text = await res.text();
-    let product;
-
-    try {
-      product = JSON.parse(text);
-    } catch {
-      console.error(`Invalid JSON for product ${params.id}`);
+    const data = await res.json();
+    if (!data || !data.id) {
+      console.error(`Invalid product data for ${params.id}`);
       return { notFound: true };
     }
 
     return {
-      props: { product },
-      revalidate: 3600, // 1 hour revalidation
+      props: { product: data },
+      revalidate: 60, // Rebuild every 1 minute
     };
   } catch (error) {
-    console.error(`Fetch error for product ${params.id}:`, error);
+    console.error(`Error fetching product ${params.id}:`, error);
     return { notFound: true };
   }
 }
